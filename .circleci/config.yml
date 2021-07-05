@@ -90,9 +90,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [backend-build]
       - run:
-          name: test the frontend
+          name: test the backend
           command: |
             cd backend
             npm run test
