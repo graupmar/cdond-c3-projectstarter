@@ -125,6 +125,10 @@ jobs:
           command: |
             cd backend
             npm audit --audit-level=critical
+      - slack/notify:
+          channel: 'pipeline'
+          event: fail
+          template: basic_fail_1
 
 workflows:
   my_workflow:
