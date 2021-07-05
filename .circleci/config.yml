@@ -69,12 +69,13 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - run:
       # Checkout code from git
       # Restore from cache
       # Your job code here
-        command: |
-            # Your code here
-            exit 1
+          command: |
+              # Your code here
+              exit 1
 
 workflows:
   my_workflow:
