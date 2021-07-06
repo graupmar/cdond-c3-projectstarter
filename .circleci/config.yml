@@ -141,7 +141,7 @@ jobs:
       - checkout
       - run: yum install -y tar #need this for workspace
       - run: yum install -y gzip #need this for workspace
-      - run: mkdir ~/project/.circleci/ansible/
+      - run: ls -la ~/project/.circleci/ansible/
       - run:
           name: Ensure back-end infrastructure exists
           command: |
