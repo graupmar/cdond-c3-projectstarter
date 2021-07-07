@@ -187,7 +187,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["c0:49:11:47:c3:00:b4:66:86:7c:f0:d6:1a:8c:69:99"]
       - run: apk add --update rsync
-      - run: apk add --update ssh
+      - run: apk add --update --no-cache openssh
       - run:
           name: Install dependencies
           command: |
