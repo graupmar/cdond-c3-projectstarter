@@ -28,3 +28,13 @@
     global: yes
     production: yes
     state: present
+
+- name: sync project files to server
+  synchronize:
+    src: /root/project/backend
+    dest: /home/ubuntu
+
+- name: "install npm"
+  shell: |
+    cd /home/ubuntu/backend
+    npm nstall
