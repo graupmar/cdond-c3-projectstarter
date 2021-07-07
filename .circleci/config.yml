@@ -198,6 +198,27 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
+  run-migrations:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm run migrations >> migration_feedback
+            cat migration_feedback
+#      - run:
+#          name: Send migration results to memstash
+#          command: |
+#            # Your code here
+#            exit 1
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+
 workflows:
   my_workflow:
     jobs:
@@ -219,3 +240,5 @@ workflows:
               only: [ master ]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
