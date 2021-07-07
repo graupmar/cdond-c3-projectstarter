@@ -177,6 +177,26 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - add_ssh_keys:
+          fingerprints: ["c0:49:11:47:c3:00:b4:66:86:7c:f0:d6:1a:8c:69:99"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible # install the dependencies needed for your playbook
+      - run:
+          name: Configure server
+          command: |
+            cat ~/project/.circleci/ansible/inventory.txt
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+      # Here's where you will add some code to rollback on failure
+
 workflows:
   my_workflow:
     jobs:
@@ -196,3 +216,5 @@ workflows:
           filters:
             branches:
               only: [ master ]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
