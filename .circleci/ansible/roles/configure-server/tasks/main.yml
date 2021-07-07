@@ -37,4 +37,4 @@
 - name: "install npm"
   shell: |
     cd /home/ubuntu/backend
-    npm nstall
+    npm install
