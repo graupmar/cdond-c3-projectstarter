@@ -231,18 +231,26 @@ jobs:
             cd backend
             npm i
             npm run build
+            npm run migrations:revert >> migration_feedback_revert
             npm run migrations >> migration_feedback
+            cat migration_feedback_revert
+            echo "######################################"
             cat migration_feedback
+
       - run:
           name: Send migration results to memstash
           command: |
             migration="0"
+            echo $migration
             if grep -q "successfully" ~/project/backend/migration_feedback;
             then
               migration="1"
+              echo $migration
             fi
             curl -H "Content-Type: text/plain" -H "token: 5538c3a0-1ea2-4a68-a2c6-f0f27d9975a1" \
               --request PUT --data $migration https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            echo "check:"
+            curl -H "token: 5538c3a0-1ea2-4a68-a2c6-f0f27d9975a1" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -267,4 +275,5 @@ workflows:
 #      - configure-infrastructure:
 #          requires: [deploy-infrastructure]
       - run-migrations
+      - run-migrations:
 #          requires: [configure-infrastructure]
