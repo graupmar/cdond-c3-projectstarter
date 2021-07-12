@@ -34,7 +34,6 @@ commands:
             #SUCCESS = 1
             #if(( $SUCCESS==1 ));
             if [[ "${SUCCESS}" == 1 ]]; then
-            then
               cd ~/project/backend
               npm install
               npm run migrations:revert
