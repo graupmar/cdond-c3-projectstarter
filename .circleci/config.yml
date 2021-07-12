@@ -227,34 +227,56 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
             cat .env
-            nc -zv udapeople.cni4vj0iw74y.eu-central-1.rds.amazonaws.com 5432
             cd backend
             npm i
             npm run build
+            #we will frst revert to have a susccess in output. later we need to remove this
             npm run migrations:revert >> migration_feedback_revert
             npm run migrations >> migration_feedback
-            cat migration_feedback_revert
-            echo "######################################"
             cat migration_feedback
-            echo "workflwo id ##############################"
-            echo ${CIRCLE_WORKFLOW_ID:0:7}
+            echo "ID: "${CIRCLE_WORKFLOW_ID:0:7}
 
       - run:
           name: Send migration results to memstash
           command: |
             migration="0"
-            echo $migration
             if grep -q "successfully" ~/project/backend/migration_feedback;
             then
               migration="1"
-              echo $migration
             fi
             curl -H "Content-Type: text/plain" -H "token: 5538c3a0-1ea2-4a68-a2c6-f0f27d9975a1" \
               --request PUT --data $migration https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            echo "check:"
-            curl -H "token: 5538c3a0-1ea2-4a68-a2c6-f0f27d9975a1" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
+            echo "BACKEND_IP: "${BACKEND_IP}
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            echo "${API_URL}" >> frontend/.env
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm install
+            npm run build
+            aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      # Here's where you will add some code to rollback on failure
+
 
 workflows:
   my_workflow:
@@ -269,6 +291,7 @@ workflows:
 #          requires: [build-frontend]
 #      - scan-backend:
 #          requires: [build-backend]
+      - deploy-infrastructure
 #      - deploy-infrastructure:
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
@@ -276,6 +299,9 @@ workflows:
 #              only: [ master ]
 #      - configure-infrastructure:
 #          requires: [deploy-infrastructure]
-      - run-migrations
+#      - run-migrations - delete later
 #      - run-migrations:
 #          requires: [configure-infrastructure]
+      - deploy-frontend
+#      - deploy-frontend:
+#          requires: [run-migrations]
