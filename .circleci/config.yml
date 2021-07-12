@@ -28,8 +28,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: 8aba2f9d-c4f8-41a8-9841-8c860d11c575" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})
-            #SUCCESS = 1
+            #SUCCESS=$(curl -H "token: 8aba2f9d-c4f8-41a8-9841-8c860d11c575" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})
+            SUCCESS = 1
             if(( $SUCCESS==1 ));
             then
               cd ~/project/backend
