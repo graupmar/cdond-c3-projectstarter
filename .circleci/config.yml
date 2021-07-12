@@ -254,9 +254,12 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar
       - attach_workspace:
           at: ~/
-      - run: yum install -y tar
       - run:
           name: Get backend url
           command: |
