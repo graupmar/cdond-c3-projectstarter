@@ -34,7 +34,7 @@
     src: /root/project/backend
     dest: /home/ubuntu
 
-- name: "install npm"
-  shell: |
-    cd /home/ubuntu/backend
-    npm install
+#- name: "install npm"
+#  shell: |
+#    cd /home/ubuntu/backend
+#    npm install
