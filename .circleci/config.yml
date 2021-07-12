@@ -354,8 +354,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
-            apk add --update tar gzip curl
+            # don't wonder. we need some more packages in case we have to rollback
+            apk add --update tar gzip curl nodejs npm
+            pip install awscli
       - attach_workspace:
           at: ~/
       - run:
