@@ -260,6 +260,7 @@ jobs:
           name: Install dependencies
           command: |
             yum -y install tar
+      - run: yum install -y tar
       - run:
           name: Get backend url
           command: |
