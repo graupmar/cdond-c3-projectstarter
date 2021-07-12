@@ -260,7 +260,7 @@ jobs:
             yum install -y tar
             yum install -y gzip
             #from: https://github.com/nodesource/distributions
-            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
             yum install -y nodejs
       - attach_workspace:
           at: ~/
