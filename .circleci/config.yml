@@ -362,7 +362,7 @@ jobs:
           command: |
             #export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
             export BACKEND_IP="18.192.37.248"
-            URL="http://${BACKEND_URL}:3030/api/status"
+            URL="http://${BACKEND_IP}:3030/api/status"
             if curl -s {$URL} | grep "ok"
             then
               return 0
