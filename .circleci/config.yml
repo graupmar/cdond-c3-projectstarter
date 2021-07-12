@@ -354,9 +354,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum install -y tar
-            yum install -y gzip
-            yum install -y curl
+            apk add --update tar gzip curl
       - attach_workspace:
           at: ~/
       - run:
