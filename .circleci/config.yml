@@ -360,7 +360,7 @@ jobs:
             #  --stack-name udapeople-cloudfront --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
             export WorkflowID="eeed7f8"
             aws cloudformation deploy --template-file .circleci/files/cloudfront.yml \
-              --stack-name udapeople-cloudfront --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
+              --stack-name udapeople-cloudfront --parameter-overrides WorkflowID="${WorkflowID}"
       # Here's where you will add some code to rollback on failure
 
 
