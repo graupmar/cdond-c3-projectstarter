@@ -256,10 +256,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            yum -y install tar
       - run: yum install -y tar
       - run:
           name: Get backend url
