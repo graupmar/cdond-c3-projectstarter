@@ -259,8 +259,9 @@ jobs:
           command: |
             yum install -y tar
             yum install -y gzip
-            yum install -y epel-release
-            yum install -y nodejs npm
+            #from: https://github.com/nodesource/distributions
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+            yum install -y nodejs
       - attach_workspace:
           at: ~/
       - run:
