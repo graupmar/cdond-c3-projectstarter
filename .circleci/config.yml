@@ -365,9 +365,9 @@ jobs:
             URL="http://${BACKEND_URL}:3030/api/status"
             if curl -s {$URL} | grep "ok"
             then
-              return 1
-            else
               return 0
+            else
+              return 1
             fi
       - run:
           name: Frontend smoke test.
@@ -377,9 +377,9 @@ jobs:
             echo "$URL"
             if curl -s {$URL} | grep "Welcome"
             then
-              return 1
-            else
               return 0
+            else
+              return 1
             fi
       # Here's where you will add some code to rollback on failure
 
