@@ -22,7 +22,8 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      # Add parameter here
+      workflow_id:
+        type: string
     steps:
       - run:
           name: Revert migrations
@@ -31,7 +32,8 @@ commands:
             #SUCCESS=$(curl -H "token: 8aba2f9d-c4f8-41a8-9841-8c860d11c575" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID})
             SUCCESS=$(curl -H "token: 5538c3a0-1ea2-4a68-a2c6-f0f27d9975a1" --request GET https://api.memstash.io/values/migration_eeed7f8)
             #SUCCESS = 1
-            if(( $SUCCESS==1 ));
+            #if(( $SUCCESS==1 ));
+            if [[ "${SUCCESS}" == 1 ]]; then
             then
               cd ~/project/backend
               npm install
