@@ -346,15 +346,18 @@ jobs:
 
   smoke-test:
     docker:
-      - image: python:3.7-alpine3.11
+#      - image: python:3.7-alpine3.11
+      - image: cytopia/ansible:latest
+    resource_class: small
+
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-            yum install -y tar
-            yum install -y gzip
+#      - run:
+#          name: Install dependencies
+#          command: |
+#            # your code here
+#            yum install -y tar
+#            yum install -y gzip
       - attach_workspace:
           at: ~/
       - run:
