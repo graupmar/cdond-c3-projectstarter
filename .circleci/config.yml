@@ -259,7 +259,8 @@ jobs:
           command: |
             yum install -y tar
             yum install -y gzip
-            yum install -y nodejs
+            yum install -y epel-release
+            yum install -y nodejs npm
       - attach_workspace:
           at: ~/
       - run:
