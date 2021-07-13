@@ -1,0 +1,17 @@
+---
+
+- name: "configuration play."
+  hosts: web
+  user: ubuntu
+  gather_facts: false
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+    - ansible_host_key_checking: false
+    - ansible_stdout_callback: yaml
+
+    - name: "install python for Ansible."
+      ######raw: test -e /usr/bin/python3 || (sudo apt -y update && sudo apt install -y python3-minimal)
+      raw: sudo apt -y update && sudo apt install -y python3-minimal
+
+  roles:
+    - configure-prometheus-node-exporter
