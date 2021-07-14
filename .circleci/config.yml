@@ -272,8 +272,8 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            #export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
-            export BACKEND_IP="18.159.224.23"
+            export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
+            #export BACKEND_IP="18.159.224.23"
             echo "BACKEND_IP: "${BACKEND_IP}
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -288,8 +288,7 @@ jobs:
             cd frontend
             npm install
             npm run build
-            aws s3 cp ~/project/frontend/dist s3://udapeople-f3fe851 --recursive
-            #aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp ~/project/frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations
@@ -474,37 +473,36 @@ jobs:
 workflows:
   my_workflow:
     jobs:
-#      - build-frontend
-#      - build-backend
-#      - test-frontend:
-#          requires: [build-frontend]
-#      - test-backend:
-#          requires: [build-backend]
-#      - scan-frontend:
-#          requires: [build-frontend]
-#      - scan-backend:
-#          requires: [build-backend]
-#      - deploy-infrastructure:
-#          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-#          filters:
-#            branches:
-#              only: [ master ]
-#      - configure-infrastructure:
-#          requires: [deploy-infrastructure]
-#      - run-migrations:
-#          requires: [configure-infrastructure]
-      - deploy-frontend
-#      - deploy-frontend:
-#          requires: [run-migrations]
-#      - deploy-backend:
-#          requires: [run-migrations]
-#      - smoke-test:
-#          requires: [deploy-backend, deploy-frontend]
-#      - cloudfront-update:
-#          requires: [smoke-test]
-#      - cleanup:
-#          requires: [cloudfront-update]
-#      - node-exporter
+     - build-frontend
+     - build-backend
+     - test-frontend:
+         requires: [build-frontend]
+     - test-backend:
+         requires: [build-backend]
+     - scan-frontend:
+         requires: [build-frontend]
+     - scan-backend:
+         requires: [build-backend]
+     - deploy-infrastructure:
+         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+         filters:
+           branches:
+             only: [ master ]
+     - configure-infrastructure:
+         requires: [deploy-infrastructure]
+     - run-migrations:
+         requires: [configure-infrastructure]
+     - deploy-frontend:
+         requires: [run-migrations]
+     - deploy-backend:
+         requires: [run-migrations]
+     - smoke-test:
+         requires: [deploy-backend, deploy-frontend]
+     - cloudfront-update:
+         requires: [smoke-test]
+     - cleanup:
+         requires: [cloudfront-update]
+     - node-exporter
 
 
 
