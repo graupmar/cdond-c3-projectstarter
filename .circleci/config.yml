@@ -272,12 +272,15 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
-            #export BACKEND_IP="18.192.37.248"
+            #export BACKEND_IP=`sed -n 2p ~/project/.circleci/ansible/inventory.txt`
+            export BACKEND_IP="18.159.224.23"
             echo "BACKEND_IP: "${BACKEND_IP}
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            echo "${API_URL}" >> ~/project/frontend/.env
+            #echo "${API_URL}" >> ~/project/frontend/.env
+            echo "API_URL=${API_URL}" >> ~/project/frontend/.env
+            echo "NODE_ENV=production" >> ~/project/frontend/.env
+            echo "ENVIRONMENT=production" >> ~/project/frontend/.env
             cat ~/project/frontend/.env
       - run:
           name: Deploy frontend objects
@@ -459,13 +462,13 @@ jobs:
       - run:
           name: Configure server now
           command: |
-            echo [web] > ~/project/.circleci/ansible/inventory.txt
-            echo "18.159.224.23" >> ~/project/.circleci/ansible/inventory.txt
+            #echo [web] > ~/project/.circleci/ansible/inventory.txt
+            #echo "18.159.224.23" >> ~/project/.circleci/ansible/inventory.txt
             cat ~/project/.circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt .circleci/ansible/node_exporter.yml
-      #- destroy-environment:
-      #    workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
 workflows:
   my_workflow:
@@ -489,6 +492,7 @@ workflows:
 #          requires: [deploy-infrastructure]
 #      - run-migrations:
 #          requires: [configure-infrastructure]
+      - deploy-frontend
 #      - deploy-frontend:
 #          requires: [run-migrations]
 #      - deploy-backend:
@@ -499,4 +503,9 @@ workflows:
 #          requires: [smoke-test]
 #      - cleanup:
 #          requires: [cloudfront-update]
-      - node-exporter
+#      - node-exporter
+
+
+
+
+
